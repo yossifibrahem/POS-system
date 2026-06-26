@@ -34,15 +34,32 @@ A V1 retail POS MVP built for Vercel and Supabase.
 
    ```bash
    NEXT_PUBLIC_SUPABASE_URL=...
-   NEXT_PUBLIC_SUPABASE_ANON_KEY=...
-   SUPABASE_SERVICE_ROLE_KEY=...
+   NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=...
+   SUPABASE_SECRET_KEY=...
    ```
 
-3. Apply the Supabase migration:
+   The app also supports the older Supabase names:
+   `NEXT_PUBLIC_SUPABASE_ANON_KEY` and `SUPABASE_SERVICE_ROLE_KEY`.
+
+3. Link the project to Supabase, then apply the migration.
+
+   Run these once per machine/project checkout:
 
    ```bash
-   supabase db push
+   npm run db:login
+   npm run db:link -- --project-ref your-project-ref
    ```
+
+   Then push the database migration:
+
+   ```bash
+   npm run db:push
+   ```
+
+   You can find the project ref in your Supabase project URL:
+   `https://your-project-ref.supabase.co`.
+   If the CLI asks for a password during linking, use the database password
+   from Supabase, not the API secret key.
 
 4. Run the app:
 
@@ -57,7 +74,7 @@ A V1 retail POS MVP built for Vercel and Supabase.
 - Create a Vercel project from this repository.
 - Add the same environment variables in Vercel.
 - Apply `supabase/migrations/0001_v1_pos_schema.sql` to the production Supabase project before first use.
-- Keep `SUPABASE_SERVICE_ROLE_KEY` server-only; never expose it to the browser.
+- Keep `SUPABASE_SECRET_KEY` server-only; never expose it to the browser.
 
 ## Verification
 
